@@ -1,0 +1,180 @@
+# Docker XMRigCCDaemon
+
+source https://github.com/Bendr0id/xmrigCC
+
+**[Find HELP/HOWTO](https://github.com/Bendr0id/xmrigCC/wiki/)**
+
+
+**XMRigCC Daemon(miner)**
+
+![Screenshot of XMRig Daemon (miner)](https://i.imgur.com/gYq1QSP.png)
+
+### Docker Daemon Usage sample
+
+```
+docker run -d --name xmrigdaemon --restart unless-stopped  d13g0s0uz4/xmrigdaemon -o pool.minemonero.pro:5555 -u YOUR_WALLET -p x -k --cc-url=IP_OF_CC_SERVER:PORT --cc-access-token=SECRET_TOKEN_TO_ACCESS_CC_SERVER --cc-worker-id=OPTIONAL_WORKER_NAME
+```
+
+### Options xmrigDaemon
+```
+  -a, --algo=ALGO                       cryptonight (default) or cryptonight-lite
+  -o, --url=URL                         URL of mining server
+  -O, --userpass=U:P                    username:password pair for mining server
+  -u, --user=USERNAME                   username for mining server
+  -p, --pass=PASSWORD                   password for mining server
+  -t, --threads=N                       number of miner threads (0 enables automatic selection of optimal number of threads, default: 0)
+  -m, --multihash-factor=N              number of hash blocks per thread to process at a time (0 enables automatic selection of optimal number of hash blocks, default: 0)
+  -A, --aesni=N                         selection of AES-NI mode (0 auto, 1 on, 2 off, default: 0)
+  -k, --keepalive                       send keepalived for prevent timeout (need pool support)
+  -r, --retries=N                       number of times to retry before switch to backup server (default: 5)
+  -R, --retry-pause=N                   time to pause between retries (default: 5)
+      --multihash-thread-mask           for multihash-factor > 1 only, limits multihash to given threads (mask), (default: all threads)
+      --cpu-affinity                    set process affinity to CPU core(s), mask 0x3 for cores 0 and 1
+      --cpu-priority                    set process priority (0 idle, 2 normal to 5 highest)
+      --no-huge-pages                   disable huge pages support
+      --donate-level=N                  donate level, default 5% (5 minutes in 100 minutes)
+      --user-agent                      set custom user-agent string for pool
+      --max-cpu-usage=N                 maximum CPU usage for automatic threads mode (default 75)
+      --safe                            safe adjust threads and av settings for current CPU
+      --nicehash                        enable nicehash/xmrig-proxy support
+      --print-time=N                    print hashrate report every N seconds
+      --api-port=N                      port for the miner API
+      --api-access-token=T              access token for API
+      --api-worker-id=ID                custom worker-id for API
+      --cc-url=URL                      url of the CC Server
+      --cc-access-token=T               access token for CC Server
+      --cc-worker-id=ID                 custom worker-id for CC Server
+      --cc-update-interval-s=N          status update interval in seconds (default: 10 min: 1)
+      --no-color                        disable colored output
+  -S, --syslog                          use system log for output messages
+  -B, --background                      run the miner in the background
+  -c, --config=FILE                     load a JSON-format configuration file
+  -l, --log-file=FILE                   log all output to a file
+  -h, --help                            display this help and exit
+  -V, --version                         output version information and exit
+  -v, --av=N                            DEPRECATED - algorithm variation, 0 auto select
+      --doublehash-thread-mask          DEPRECATED - same as multihash-thread-mask
+
+```
+
+
+## Multihash (multihash-factor)
+With this option it is possible to increase the number of hashblocks calculated by a single thread in each round.
+Selecting multihash-factors greater than 1 increases the L3 cache demands relative to the multihash-factor.
+E.g. at multihash-factor 2, each Cryptonight thread requires 4MB and each Cryptonight-lite thread requires 2 MB of L3 cache.
+With multihash-factor 3, they need 6MB or 3MB respectively.
+
+Setting multihash-factor to 0 will allow automatic detection of the optimal value.
+Xmrig will then try to utilize as much of the L3 cache as possible for the selected number of threads.
+If the threads parameter has been set to auto, Xmrig will detect the optimal number of threads first.
+After that it finds the greatest possible multihash-factor.
+
+### Multihash for low power operation
+Depending the CPU and its L3 caches, it can make sense to replace multiple single hash threads with single multi-hash counterparts.
+This change might come at the price of a minor drop in effective hash-rate, yet it will also reduce heat production and power consumption of the used CPU.
+
+### Multihash for optimal CPU exploitation
+In certain environments (e.g. vServer) the system running xmrig can have access to relatively large amounts of L3 cache, but may has access to only a few CPU cores.
+In such cases, running xmrig with higher multihash-factors can lead to improvements.
+
+
+## Multihash thread Mask (only for multihash-factor > 1)
+With this option you can limit multihash to the given threads (mask).
+This can significantly improve your hashrate by using unused l3 cache.
+The default is to run the configured multihash-factor on all threads.
+
+
+```
+{
+...
+
+"multihash-factor":2,
+"multihash-thread-mask":"0x5", // in binary -> 0101
+"threads": 4,
+
+...
+}
+```
+This will limit multihash mode (multihash-factor = 2) to thread 0 and thread 2, thread 1 and thread 3 will run in single hashmode.
+
+
+## Common Issues
+### XMRigMiner
+* XMRigMiner is just the worker, it is not designed to work standalone. Please start **XMRigDaemon** instead.
+
+### Windows only: DLL error on starting
+* Make sure that you installed latest Visual C++ Redistributable for Visual Studio 2015. Can be downloaded here: [microsoft.com](https://www.microsoft.com/de-de/download/details.aspx?id=48145)
+
+### Linux only: Background mode
+* The `--background` option will only work properly for the XMRigServer. But there is a simple workaround for the XMRigDaemon process. Just append an `&` to the command and it will run smoothly in the background.
+
+    `./xmrigDaemon --config=my_config_cc.json &` or you just use `screen`
+
+
+
+### HUGE PAGES unavailable (Linux)
+* Before starting XMRigDaemon set huge pages
+
+    `sudo sysctl -w vm.nr_hugepages=128`
+
+
+## Other information
+* No HTTP support, only stratum protocol support.
+* No TLS support.
+
+
+### CPU mining performance
+Please note performance is highly dependent on system load.
+The numbers above are obtained on an idle system.
+Tasks heavily using a processor cache, such as video playback, can greatly degrade hashrate.
+Optimal number of threads depends on the size of the L3 cache of a processor, 1 thread requires 2 MB (Cryptonight) or 1MB (Cryptonigh-Lite) of cache.
+
+### Maximum performance checklist
+* Idle operating system.
+* Do not exceed optimal thread count.
+* Use modern CPUs with AES-NI instruction set.
+* Try setup optimal cpu affinity.
+* Try decreasing number of threads while increasing multihash-factor.
+  Allocate unused cores and L3 cache with the help of multihash-thread-mask.
+* Enable fast memory (Large/Huge pages).
+
+## Benchmarks
+
+Here are some result reported by users. Feel free to share your results, i'll add them.
+
+### XMRigCC with max optimizations:
+
+  * AMD Ryzen 1950x
+
+        AEON: ~5300 h/s    (XMRig Stock: ~4900 h/s)
+        XMR: ~1320 h/s     (XMRig Stock: ~1200 h/s)
+
+  * AMD Ryzen 1600
+
+        AEON: ~2065 h/s    (XMRig Stock: ~1800 h/s)
+        XMR: ~565 h/s      (XMRig Stock: ~460 h/s)
+
+  * 4x Intel XEON e7-4820
+
+        XMR: ~2500 h/s     (XMRig Stock ~2200h/s)
+
+  * 2x Intel XEON 2x e5-2670
+
+        AEON: ~3300 h/s     (XMRig Stock ~2500h/s)
+
+## Donations
+* Default donation 5% (5 minutes in 100 minutes) can be reduced to 1% via command line option `--donate-level`.
+
+##### BenDroid (xmrigCC):
+XMR:  `4BEn3sSa2SsHBcwa9dNdKnGvvbyHPABr2JzoY7omn7DA2hPv84pVFvwDrcwMCWgz3dQVcrkw3gE9aTC9Mi5HxzkfF9ev1eH`
+AEON: `Wmtm4S2cQ8uEBBAVjvbiaVAPv2d6gA1mAUmBmjna4VF7VixLxLRUYag5cvsym3WnuzdJ9zvhQ3Xwa8gWxPDPRfcQ3AUkYra3W`
+BTC:  `128qLZCaGdoWhBTfaS7rytpbvG4mNTyAQm`
+
+##### xmrig:
+XMR:  `48edfHu7V9Z84YzzMa6fUueoELZ9ZRXq9VetWzYGzKt52XU5xvqgzYnDK9URnRoJMk1j8nLwEVsaSWJ4fhdUyZijBGUicoD`
+BTC:  `1P7ujsXeX7GxQwHNnJsRMgAdNkFZmNVqJT`
+
+## Contact
+* ben [at] graef.in
+* Telegram: @BenDr0id
+* [reddit](https://www.reddit.com/user/BenDr0id/)
