@@ -2,8 +2,9 @@
 
 FROM ubuntu:latest
 
-RUN apt-get update && \
-	apt-get install software-properties-common git build-essential cmake libuv1-dev -y
+RUN  sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
+	apt-get update && apt-get install -y \
+	software-properties-common git build-essential cmake libuv1-dev libmicrohttpd-dev wget vim
 
 RUN add-apt-repository ppa:jonathonf/gcc-7.1 && \
 	apt-get update && \
