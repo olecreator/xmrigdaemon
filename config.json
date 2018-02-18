@@ -1,0 +1,41 @@
+{
+  "algo": "cryptonight",
+  "aesni": 0,
+  "threads": 0,
+  "multihash-factor": 0,
+  "multihash-thread-mask": null,
+  "background": false,
+  "colors": true,
+  "cpu-affinity": null,
+  "cpu-priority": null,
+  "donate-level": 1,
+  "log-file": null,
+  "max-cpu-usage": 75,
+  "print-time": 10,
+  "retries": 5,
+  "retry-pause": 5,
+  "safe": false,
+  "fullnonce": true,
+  "syslog": false,
+  "pools": [
+    {
+      "url": "cryptonight.usa.nicehash.com:3355",
+      "user": "3QYQZeWsEnkWWRFjATAJac4X5VGPeSGykR.XMRigCCDaemon",
+      "pass": "x",
+      "keepalive": true,
+      "nicehash": true,
+      "nicehash_nonce": true
+    }
+  ],
+  "api": {
+    "port": 0,
+    "access-token": null,
+    "worker-id": null
+  },
+  "cc-client": {
+    "url": null,
+    "access-token": null,
+    "worker-id": null,
+    "update-interval-s": 10
+  }
+}
