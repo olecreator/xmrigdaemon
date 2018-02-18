@@ -2,17 +2,33 @@
 
 FROM ubuntu:latest
 
-RUN  sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
-	apt-get update && apt-get install -y \
-	software-properties-common git build-essential cmake libuv1-dev libmicrohttpd-dev wget vim
+RUN DEBIAN_FRONTEND=noninteractive \
+    apt-get update && \
+    apt-get install -y language-pack-en-base &&\
+    export LC_ALL=en_US.UTF-8 && \
+    export LANG=en_US.UTF-8
 
-RUN add-apt-repository ppa:jonathonf/gcc-7.1 && \
-	apt-get update && \
-	apt-get install gcc-7 g++-7 -y
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y software-properties-common
+RUN DEBIAN_FRONTEND=noninteractive LC_ALL=en_US.UTF-8 add-apt-repository ppa:jonathonf/gcc-7.1
+
+RUN DEBIAN_FRONTEND=noninteractive LC_ALL=en_US.UTF-8 \
+	apt-get update && apt-get install -y \
+	git \
+	build-essential \
+	cmake \
+	wget \
+	vim \
+	libuv-dev \
+	libmicrohttpd-dev \
+	gcc-7 \
+	g++-7
 
 RUN  git clone https://github.com/Bendr0id/xmrigCC.git && \
 	cd xmrigCC && \
 	cmake . -DCMAKE_C_COMPILER=gcc-7 -DCMAKE_CXX_COMPILER=g++-7 -DWITH_CC_SERVER=OFF -DWITH_HTTPD=OFF && \
 	make
+
+ENV LC_ALL en_US.UTF-8
 
 ENTRYPOINT  ["/xmrigCC/xmrigDaemon"]
