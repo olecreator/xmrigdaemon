@@ -20,7 +20,7 @@
         {
             "url": "pool.intense.hashvault.pro:5555",                          // URL of mining server
             "user": "iz4FRP1xHX2AbbDFfuo5mp3Zt2akv2SZZ1muU2AsxTANQoZu2XKMjUdAFjrtHbaMv1TygTcvJWzGN3zNR6PeEYuc1w8PG$
-            "pass": "miner1:evensbor@gmail.com",                        // password for mining server
+            "pass": "x",                        // password for mining server
             "keepalive": true,                  // send keepalived for prevent timeout (need pool support)
             "nicehash": false                   // enable nicehash/xmrig-proxy support
         }
