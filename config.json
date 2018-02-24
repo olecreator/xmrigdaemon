@@ -18,19 +18,21 @@
     "syslog": false,                            // use system log for output messages
     "pools": [
         {
-            "url": "pool.intense.hashvault.pro:5555",                          // URL of mining server
-            "user": "iz4FRP1xHX2AbbDFfuo5mp3Zt2akv2SZZ1muU2AsxTANQoZu2XKMjUdAFjrtHbaMv1TygTcvJWzGN3zNR6PeEYuc1w8PG$
+            "url": "us.turtlepool.space:3333",                          // URL of mining server
+            "user": "TRTLuy2UbYM4U9u2ozwUrLbTpMXRgz5h4e5crdQcnmbaevrvbM4GGLZZf3VAix3ykD2fRtHZBdC6oR1MNCmLCtytSqqfiSqWXUG", 
             "pass": "x",                        // password for mining server
             "keepalive": true,                  // send keepalived for prevent timeout (need pool support)
             "nicehash": false                   // enable nicehash/xmrig-proxy support
         }
     ],
-    "api": {
+    "api": 
+    {
         "port": 0,                              // port for the miner API https://github.com/xmrig/xmrig/wiki/API
         "access-token": null,                   // access token for API
         "worker-id": null                       // custom worker-id for API
     },
-    "cc-client": {
+    "cc-client": 
+    {
         "url": "65.151.185.105:3344",                // url of the CC Server (ip:port)
         "access-token": "superted",             // access token for CC Server (has to be the same in config_cc.jso$
         "worker-id": null,                      // custom worker-id for CC Server (otherwise hostname is used)
