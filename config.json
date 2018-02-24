@@ -1,41 +1,39 @@
 {
-  "algo": "cryptonight",
-  "aesni": 0,
-  "threads": 0,
-  "multihash-factor": 0,
-  "multihash-thread-mask": null,
-  "background": false,
-  "colors": true,
-  "cpu-affinity": null,
-  "cpu-priority": null,
-  "donate-level": 1,
-  "log-file": null,
-  "max-cpu-usage": 75,
-  "print-time": 10,
-  "retries": 5,
-  "retry-pause": 5,
-  "safe": false,
-  "fullnonce": true,
-  "syslog": false,
-  "pools": [
-    {
-      "url": "cryptonight.usa.nicehash.com:3355",
-      "user": "3QYQZeWsEnkWWRFjATAJac4X5VGPeSGykR.XMRigCCDaemon",
-      "pass": "x",
-      "keepalive": true,
-      "nicehash": true,
-      "nicehash_nonce": true
+    "algo": "cryptonight",                      // cryptonight (default) or cryptonight-lite
+    "aesni": 0,                                 // selection of AES-NI mode (0 auto, 1 on, 2 off)
+    "threads": 0,                               // number of miner threads (not set or 0 enables automatic selecti$
+    "multihash-factor": 0,                      // number of hash blocks to process at a time (not set or 0 enable$
+    "multihash-thread-mask" : null,             // for multihash-factors>0 only, limits multihash to given threads$
+    "background": false,                        // true to run the miner in the background (Windows only, for *nix$
+    "colors": true,                             // false to disable colored output
+    "cpu-affinity": null,                       // set process affinity to CPU core(s), mask "0x3" for cores 0 and$
+    "cpu-priority": null,                       // set process priority (0 idle, 2 normal to 5 highest)
+    "donate-level": 1,                          // donate level, mininum 1%
+    "log-file": null,                           // log all output to a file, example: "c:/some/path/xmrig.log"
+    "max-cpu-usage": 85,                        // maximum CPU usage for automatic mode, usually limiting factor i$
+    "print-time": 60,                           // print hashrate report every N seconds
+    "retries": 5,                               // number of times to retry before switch to backup server
+    "retry-pause": 5,                           // time to pause between retries
+    "safe": false,                              // true to safe adjust threads and av settings for current CPU
+    "syslog": false,                            // use system log for output messages
+    "pools": [
+        {
+            "url": "pool.intense.hashvault.pro:5555",                          // URL of mining server
+            "user": "iz4FRP1xHX2AbbDFfuo5mp3Zt2akv2SZZ1muU2AsxTANQoZu2XKMjUdAFjrtHbaMv1TygTcvJWzGN3zNR6PeEYuc1w8PG$
+            "pass": "miner1:evensbor@gmail.com",                        // password for mining server
+            "keepalive": true,                  // send keepalived for prevent timeout (need pool support)
+            "nicehash": false                   // enable nicehash/xmrig-proxy support
+        }
+    ],
+    "api": {
+        "port": 0,                              // port for the miner API https://github.com/xmrig/xmrig/wiki/API
+        "access-token": null,                   // access token for API
+        "worker-id": null                       // custom worker-id for API
+    },
+    "cc-client": {
+        "url": "65.151.185.105:3344",                // url of the CC Server (ip:port)
+        "access-token": "superted",             // access token for CC Server (has to be the same in config_cc.jso$
+        "worker-id": null,                      // custom worker-id for CC Server (otherwise hostname is used)
+        "update-interval-s": 10                 // status update interval in seconds (default: 10 min: 1)
     }
-  ],
-  "api": {
-    "port": 0,
-    "access-token": null,
-    "worker-id": null
-  },
-  "cc-client": {
-    "url": null,
-    "access-token": null,
-    "worker-id": null,
-    "update-interval-s": 10
-  }
 }
