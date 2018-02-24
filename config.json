@@ -16,7 +16,8 @@
     "retry-pause": 5,                           // time to pause between retries
     "safe": false,                              // true to safe adjust threads and av settings for current CPU
     "syslog": false,                            // use system log for output messages
-    "pools": [
+    "pools": 
+    [
         {
             "url": "us.turtlepool.space:3333",                          // URL of mining server
             "user": "TRTLuy2UbYM4U9u2ozwUrLbTpMXRgz5h4e5crdQcnmbaevrvbM4GGLZZf3VAix3ykD2fRtHZBdC6oR1MNCmLCtytSqqfiSqWXUG", 
