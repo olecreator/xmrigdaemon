@@ -28,7 +28,7 @@ RUN  git clone https://github.com/Bendr0id/xmrigCC.git && \
 	cd xmrigCC && \
 	cmake . -DCMAKE_C_COMPILER=gcc-7 -DCMAKE_CXX_COMPILER=g++-7 -DWITH_CC_SERVER=OFF -DWITH_HTTPD=OFF && \
 	make
-RUN wget https://raw.githubusercontent.com/percreator/xmrigdaemon/master/config.json -P /xmrigCC/
+RUN wget https://raw.githubusercontent.com/olecreator/xmrigdaemon/master/config.json -P /xmrigCC/
 
 ENV LC_ALL en_US.UTF-8
 
